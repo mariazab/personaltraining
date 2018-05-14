@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-bootstrap';
 import AddTraining from './AddTraining';
+import Editcustomer from './Editcustomer';
 
 
 class Customerlist extends Component {
@@ -73,6 +74,17 @@ class Customerlist extends Component {
           });
         
         
+    }
+
+    //Update customer
+    updateCustomer = (link, customer) => {
+        fetch(link, {
+            method: 'PUT',
+            headers : {'Content-Type': 'application/json'},
+            body: JSON.stringify(customer)
+        })
+        .then(res => this.loadCustomers())
+        .catch(err => console.error(err))
     }
 
        // Add new training
@@ -144,6 +156,14 @@ class Customerlist extends Component {
                                     filterable: false,
                                     width: 140,
                                     Cell: ({value}) => (<AddTraining addTraining={this.addTraining} loadCustomers={this.loadCustomers} customer={(value)} />)
+                                },
+                                {
+                                    id: 'button',
+                                    sortable: false,
+                                    filterable: false,
+                                    width: 100,
+                                    accessor: "links[0].href",
+                                    Cell: ({row, value}) => (<Editcustomer updateCustomer={this.updateCustomer} link={value} customer={row} />)
                                 },
                                 {
                                     id: "button",
